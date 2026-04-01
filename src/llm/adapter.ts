@@ -37,7 +37,7 @@ import type { LLMAdapter } from '../types.js'
  * Additional providers can be integrated by implementing {@link LLMAdapter}
  * directly and bypassing this factory.
  */
-export type SupportedProvider = 'anthropic' | 'openai'
+export type SupportedProvider = 'anthropic' | 'copilot' | 'openai'
 
 /**
  * Instantiate the appropriate {@link LLMAdapter} for the given provider.
@@ -60,6 +60,10 @@ export async function createAdapter(
     case 'anthropic': {
       const { AnthropicAdapter } = await import('./anthropic.js')
       return new AnthropicAdapter(apiKey)
+    }
+    case 'copilot': {
+      const { CopilotAdapter } = await import('./copilot.js')
+      return new CopilotAdapter(apiKey)
     }
     case 'openai': {
       const { OpenAIAdapter } = await import('./openai.js')
