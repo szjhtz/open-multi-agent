@@ -1,11 +1,10 @@
 /**
- * Quick smoke test for the Copilot adapter.
+ * Quick smoke test for the Gemini adapter.
  *
  * Run:
- *   npx tsx examples/05-copilot-test.ts
+ *   npx tsx examples/08-gemini-test.ts
  *
- * If GITHUB_COPILOT_TOKEN is not set, the adapter will start an interactive
- * OAuth2 device flow — you'll be prompted to sign in via your browser.
+ * If GEMINI_API_KEY is not set, the adapter will not work.
  */
 
 import { OpenMultiAgent } from '../src/index.js'
