@@ -26,7 +26,7 @@
 npm install @jackchen_me/open-multi-agent
 ```
 
-在环境变量中设置 `ANTHROPIC_API_KEY`（以及可选的 `OPENAI_API_KEY` 或用于 Copilot 的 `GITHUB_TOKEN`）。
+在环境变量中设置 `ANTHROPIC_API_KEY`（以及可选的 `OPENAI_API_KEY` 或用于 Copilot 的 `GITHUB_TOKEN`）。通过 Ollama 使用本地模型无需 API key — 参见 [example 06](examples/06-local-model.ts)。
 
 三个智能体，一个目标——框架处理剩下的一切：
 
@@ -177,11 +177,22 @@ npx tsx examples/01-single-agent.ts
 | `file_edit` | 通过精确字符串匹配编辑文件。 |
 | `grep` | 使用正则表达式搜索文件内容。优先使用 ripgrep，回退到 Node.js 实现。 |
 
+## 支持的 Provider
+
+| Provider | 配置 | 环境变量 | 状态 |
+|----------|------|----------|------|
+| Anthropic (Claude) | `provider: 'anthropic'` | `ANTHROPIC_API_KEY` | 已验证 |
+| OpenAI (GPT) | `provider: 'openai'` | `OPENAI_API_KEY` | 已验证 |
+| GitHub Copilot | `provider: 'copilot'` | `GITHUB_TOKEN` | 已验证 |
+| Ollama / vLLM / LM Studio | `provider: 'openai'` + `baseURL` | — | 已验证 |
+
+任何 OpenAI 兼容 API 均可通过 `provider: 'openai'` + `baseURL` 接入（DeepSeek、Groq、Mistral、Qwen、MiniMax 等）。这些 Provider 尚未完整验证——欢迎通过 [#25](https://github.com/JackChen-me/open-multi-agent/issues/25) 贡献验证。
+
 ## 参与贡献
 
 欢迎提 Issue、功能需求和 PR。以下方向的贡献尤其有价值：
 
-- **LLM 适配器** — Anthropic、OpenAI、Copilot 已原生支持。任何 OpenAI 兼容 API（Ollama、vLLM、LM Studio 等）可通过 `baseURL` 直接使用。欢迎贡献 Gemini 等其他适配器。`LLMAdapter` 接口只需实现两个方法：`chat()` 和 `stream()`。
+- **Provider 集成** — 验证并文档化 OpenAI 兼容 Provider（DeepSeek、Groq、Qwen、MiniMax 等）通过 `baseURL` 接入。详见 [#25](https://github.com/JackChen-me/open-multi-agent/issues/25)。对于非 OpenAI 兼容的 Provider（如 Gemini），欢迎贡献新的 `LLMAdapter` 实现——接口只需两个方法：`chat()` 和 `stream()`。
 - **示例** — 真实场景的工作流和用例。
 - **文档** — 指南、教程和 API 文档。
 

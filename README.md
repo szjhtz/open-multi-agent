@@ -26,7 +26,7 @@ Requires Node.js >= 18.
 npm install @jackchen_me/open-multi-agent
 ```
 
-Set `ANTHROPIC_API_KEY` (and optionally `OPENAI_API_KEY` or `GITHUB_TOKEN` for Copilot) in your environment.
+Set `ANTHROPIC_API_KEY` (and optionally `OPENAI_API_KEY` or `GITHUB_TOKEN` for Copilot) in your environment. Local models via Ollama require no API key — see [example 06](examples/06-local-model.ts).
 
 Three agents, one goal — the framework handles the rest:
 
@@ -173,11 +173,22 @@ npx tsx examples/01-single-agent.ts
 | `file_edit` | Edit a file by replacing an exact string match. |
 | `grep` | Search file contents with regex. Uses ripgrep when available, falls back to Node.js. |
 
+## Supported Providers
+
+| Provider | Config | Env var | Status |
+|----------|--------|---------|--------|
+| Anthropic (Claude) | `provider: 'anthropic'` | `ANTHROPIC_API_KEY` | Verified |
+| OpenAI (GPT) | `provider: 'openai'` | `OPENAI_API_KEY` | Verified |
+| GitHub Copilot | `provider: 'copilot'` | `GITHUB_TOKEN` | Verified |
+| Ollama / vLLM / LM Studio | `provider: 'openai'` + `baseURL` | — | Verified |
+
+Any OpenAI-compatible API should work via `provider: 'openai'` + `baseURL` (DeepSeek, Groq, Mistral, Qwen, MiniMax, etc.). These providers have not been fully verified yet — contributions welcome via [#25](https://github.com/JackChen-me/open-multi-agent/issues/25).
+
 ## Contributing
 
 Issues, feature requests, and PRs are welcome. Some areas where contributions would be especially valuable:
 
-- **LLM Adapters** — Anthropic, OpenAI, and Copilot are supported out of the box. Any OpenAI-compatible API (Ollama, vLLM, LM Studio, etc.) works via `baseURL`. Additional adapters for Gemini and other providers are welcome. The `LLMAdapter` interface requires just two methods: `chat()` and `stream()`.
+- **Provider integrations** — Verify and document OpenAI-compatible providers (DeepSeek, Groq, Qwen, MiniMax, etc.) via `baseURL`. See [#25](https://github.com/JackChen-me/open-multi-agent/issues/25). For providers that are NOT OpenAI-compatible (e.g. Gemini), a new `LLMAdapter` implementation is welcome — the interface requires just two methods: `chat()` and `stream()`.
 - **Examples** — Real-world workflows and use cases.
 - **Documentation** — Guides, tutorials, and API docs.
 
